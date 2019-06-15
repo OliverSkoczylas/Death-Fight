@@ -58,30 +58,41 @@ class Settings:
     
     
     
-    ken_blue_left = turtle.Turtle()
-    ken_blue_left.penup()
-    ken_blue_left.shape("real_blue_ken.gif")
-    ken_blue_left.goto(-290,-50)
+    self.ken_blue_left = turtle.Turtle()
+    self.ken_blue_left.penup()
+    self.ken_blue_left.shape("real_blue_ken.gif")
+    self.ken_blue_left.goto(-290,-50)
     
-    ken_red_left = turtle.Turtle()
-    ken_red_left.penup()
-    ken_red_left.shape("real_red_ken.gif")
-    ken_red_left.goto(-110,-50)
+    self.ken_red_left = turtle.Turtle()
+    self.ken_red_left.penup()
+    self.ken_red_left.shape("real_red_ken.gif")
+    self.ken_red_left.goto(-110,-50)
     
-    ken_green_left = turtle.Turtle()
-    ken_green_left.penup()
-    ken_green_left.shape("real_green_ken.gif")
-    ken_green_left.goto(-170, -90)
+    self.ken_green_left = turtle.Turtle()
+    self.ken_green_left.penup()
+    self.ken_green_left.shape("real_green_ken.gif")
+    self.ken_green_left.goto(-190, -190)
      
-    ken_blue_right = turtle.Turtle()
-    ken_blue_right.shape("real_blue_ken.gif")
+    self.ken_blue_right = turtle.Turtle()
+    self.ken_blue_right.penup()
+    self.ken_blue_right.shape("real_blue_ken.gif")
+    self.ken_blue_right.goto(110, -50)
     
-    ken_red_right = turtle.Turtle()
-    ken_red_right.shape("real_red_ken.gif")
+    self.ken_red_right = turtle.Turtle()
+    self.ken_red_right.penup()
+    self.ken_red_right.shape("real_red_ken.gif")
+    self.ken_red_right.goto(299, -50)
+    
+    self.ken_green_right = turtle.Turtle()
+    self.ken_green_right.penup()
+    self.ken_green_right.shape("real_green_ken.gif")
+    self.ken_green_right.goto(200, -190)
     
     
-    ken_green_right = turtle.Turtle()
-    ken_green_right.shape("real_green_ken.gif")
+    self.map_star = turtle.Turtle()
+    self.map_star.penup()
+    self.map_star.shape
+    
     
     
     
@@ -109,6 +120,12 @@ class Settings:
     self.writer_map3.write("Map 3", True, font=("arial", 40, "normal"))
     self.writer_left.write("Left Character Color", True, font=("arial", 25, "normal"))
     self.writer_right.write("Right Character Color", True, font=("arial", 25, "normal"))
+    self.ken_blue_left.showturtle()
+    self.ken_red_left.showturtle()
+    self.ken_green_left.showturtle()
+    self.ken_blue_right.showturtle()
+    self.ken_red_right.showturtle()
+    self.ken_green_right.showturtle()
   
   def hide(self):
    
@@ -120,5 +137,11 @@ class Settings:
     self.writer_map3.clear()
     self.writer_left.clear()
     self.writer_right.clear()
-    
+    self.ken_blue_left.hideturtle()
+    self.ken_red_left.hideturtle()
+    self.ken_green_left.hideturtle()
+    self.ken_blue_right.hideturtle()
+    self.ken_red_right.hideturtle()
+    self.ken_green_right.hideturtle()
+  
     

@@ -22,6 +22,39 @@ screen.tracer(0)
 menu = Menu()
 settings = Settings()
 
+def f_play_button(x, y):
+    menu.hide()
+    settings.show()
+    screen.update()
+
+menu.play_button.onclick(f_play_button)
+
+
+def f_map1(x, y):
+    
+
+
+settings.map1.onclick()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #settings.show()
 menu.show()
