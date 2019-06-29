@@ -15,11 +15,11 @@ class Menu:
   def show(self):
     self.play_button.st()
     
-    self.play_button.showturtle()
+    self.play_button.st()
    
     
     
     
   def hide(self):
-    self.play_button.hideturtle()
+    self.play_button.ht()
     
