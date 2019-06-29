@@ -43,17 +43,14 @@ class Settings:
     self.writer_map3.goto(120,200)
     self.writer_map3.hideturtle()
     
-    
     self.writer_left = turtle.Turtle()
     self.writer_left.penup()
     self.writer_left.goto(-360, 20)
     self.writer_left.hideturtle()
     
-    
-    
     self.writer_right = turtle.Turtle()
     self.writer_right.penup()
-    self.writer_right.goto(45, 20)
+    self.writer_right.goto(20, 20)
     self.writer_right.hideturtle()
     
     
@@ -73,6 +70,8 @@ class Settings:
     self.ken_green_left.shape("real_green_ken.gif")
     self.ken_green_left.goto(-190, -190)
      
+    
+    
     self.ken_blue_right = turtle.Turtle()
     self.ken_blue_right.penup()
     self.ken_blue_right.shape("real_blue_ken.gif")
@@ -89,13 +88,21 @@ class Settings:
     self.ken_green_right.goto(200, -190)
     
     
+    #star to each section
     self.map_star = turtle.Turtle()
     self.map_star.penup()
-    self.map_star.shape
+    self.map_star.shape("star.gif")
+    self.map_star.hideturtle()
     
+    self.left_star = turtle.Turtle()
+    self.left_star.penup()
+    self.left_star.shape("star.gif")
+    self.left_star.hideturtle()
     
-    
-    
+    self.right_star = turtle.Turtle()
+    self.right_star.penup()
+    self.right_star.shape("star.gif")
+    self.right_star.hideturtle()
     
     
     
