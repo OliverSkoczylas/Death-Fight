@@ -3,6 +3,7 @@ import turtle
 from menu import Menu
 from settings import Settings
 
+# Instantiate screen and register all image assets
 screen = turtle.Screen()
 screen.setup(800, 1000)
 screen.bgpic("backround.gif")
@@ -15,29 +16,25 @@ screen.addshape("real_green_ken.gif")
 screen.addshape("real_red_ken.gif")
 screen.addshape("star.gif")
 
+screen.tracer(0) # Only update screen after screen.update()
 
-
-screen.tracer(0)
-
-
+# Create the two menues (hidden by default)
 menu = Menu()
 settings = Settings()
 
+# Default game options
 stage = "stage1"
 player_left = "blue"
 player_right = "red"
 
-
-
-#main play button
+# Main play button function
 def f_play_button(x, y):
     menu.hide()
     settings.show()
     screen.update()
 menu.play_button.onclick(f_play_button)
 
-#these are all the stage buttons
-
+# All the stage button functions
 def f_stage1(x,y):
     global stage
     settings.stage_star.goto(settings.stage1.pos())
@@ -62,8 +59,7 @@ def f_stage3(x,y):
     screen.update()
 settings.stage3.onclick(f_stage3)
 
-#left color select buttons
-
+# Left color select button functions
 def f_ken_blue_left(x, y):
     global player_left
     settings.left_star.goto(settings.ken_blue_left.pos())
@@ -88,8 +84,7 @@ def f_ken_green_left(x, y):
     screen.update()
 settings.ken_green_left.onclick(f_ken_green_left)
 
-#right color selct buttons
-
+# Right color selct button functions
 def f_ken_blue_right(x, y):
     global player_right
     settings.right_star.goto(settings.ken_blue_right.pos())
@@ -115,6 +110,6 @@ def f_ken_green_right(x, y):
 settings.ken_green_right.onclick(f_ken_green_right)
 
 #settings.show()
-menu.show()
+menu.show() # Show the main menu first
 screen.update()
 turtle.mainloop()
