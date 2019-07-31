@@ -4,23 +4,19 @@ import animations
 class Player(animations.Sprite):
     """
     Image naming template: name0b.gif, name1b.gif, name2b.gif
-    State naming template: name_l, name_r
-    States: duck_down, duck_up, idle, jump_up, jump_down, move_right, move_left, punch
+    State naming template: name, name_r
+    States: duck_down, duck_up, idle, jump_up, jump_down, move_right, moveeft, punch
     """
     def __init__(self, direction, color):
         super(Player, self).__init__()
-        self.direction = direction
-        delay = delay
-        path = path + '' + color + '/'
-        path_left = path + 'left/'
-        path_right = path + 'right/'
-        self.add_state('idle_l', delay, [path_left + 'idle0.gif', path_left + 'idle1.gif', path_left + 'idle2.gif'])
-        self.add_state('duck_down_l', delay, [path_left + 'duck_down0.gif', path_left + 'duck_down1.gif', path_left + 'duck_down2.gif'])
-        self.add_state('duck_up_l', delay , [path_left + 'duck_up0.gif', path_left + 'duck_up1.gif', path_left + 'duck_up2.gif'])                               ')
-        self.add_state('punch_l' , delay , [path_left + 'punch0.gif' , path_left + 'punch1.gif' , path_left + 'punch2.gif'])
-        self.add_state
-        self.add_state
-
+        delay = 100
+        path = path + '' + color + '/' + ('left/' if direction is 'left' else 'right/')
+        self.add_state('duck_down', delay, [path + 'duck_down0.gif', path + 'duck_down1.gif', path + 'duck_down2.gif'])
+        self.add_state('duck_up', delay, [path + 'duck_up0.gif', path + 'duck_up1.gif', path + 'duck_up2.gif'])                               ')
+        self.add_state('punch' , delay, [path + 'punch0.gif' , path + 'punch1.gif' , path + 'punch2.gif'])
+        self.add_state('move' , delay, [path + 'move0.gif' , path + 'move1.gif' , path + 'move2.gif'])
+        self.add_state('jump' , delay, [path + 'jump0.gif' . path + 'jump1.gif' , path + 'jump2.gif'])
+        self.add_state('idle', delay, [path + 'idle0.gif', path + 'idle1.gif', path + 'idle2.gif'])
 
 
 class Game:
@@ -32,8 +28,6 @@ class Game:
     shelly.set_state('idle')
     """
 
-    def __init__(self, stage, player_left, player_right):
-        self.player_left = animations.Sprite()
-        self.
-        
-        self.player_right = animations.Sprite()
+    def __init__(self, stage, player_left_color, player_right_color):
+        self.player_left = Player('left', player_left_color)        
+        self.player_right = Player('right', player_right_color)

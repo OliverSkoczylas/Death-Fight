@@ -8,12 +8,12 @@ class Settings:
     self.stage1 = turtle.Turtle()
     self.stage1.penup()
     self.stage1.shape("realstage.gif")
-    self.stage1.goto(-250,150)
+    self.stage1.goto(-250,120)
     
     
     self.writer_stage1 = turtle.Turtle()
     self.writer_stage1.penup()
-    self.writer_stage1.goto(-323,200)
+    self.writer_stage1.goto(-340,160)
     self.writer_stage1.ht()
    
    
@@ -22,12 +22,12 @@ class Settings:
     self.stage2 = turtle.Turtle()
     self.stage2.penup()
     self.stage2.shape("realgreen.gif")
-    self.stage2.goto(-25,125)  
+    self.stage2.goto(-25,90)  
     
     
     self.writer_stage2 = turtle.Turtle()
     self.writer_stage2.penup()
-    self.writer_stage2.goto(-100,200)
+    self.writer_stage2.goto(-125,150)
     self.writer_stage2.ht()
     
     

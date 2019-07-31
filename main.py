@@ -5,8 +5,8 @@ from settings import Settings
 
 # Instantiate screen and register all image assets
 screen = turtle.Screen()
-screen.setup(800, 1000)
-screen.bgpic("backround.gif")
+screen.setup(1000, 800)
+screen.bgpic("ezgif.com-apng-to-gif.gif")
 screen.addshape("play.button.gif")
 screen.addshape("realstage.gif")
 screen.addshape("realgreen.gif")
