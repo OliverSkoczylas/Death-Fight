@@ -10,13 +10,13 @@ class Player(animations.Sprite):
     def __init__(self, direction, color):
         super(Player, self).__init__()
         delay = 100
-        path = path + '' + color + '/' + ('left/' if direction is 'left' else 'right/')
-        self.add_state('duck_down', delay, [path + 'duck_down0.gif', path + 'duck_down1.gif', path + 'duck_down2.gif'])
-        self.add_state('duck_up', delay, [path + 'duck_up0.gif', path + 'duck_up1.gif', path + 'duck_up2.gif'])                               ')
-        self.add_state('punch' , delay, [path + 'punch0.gif' , path + 'punch1.gif' , path + 'punch2.gif'])
-        self.add_state('move' , delay, [path + 'move0.gif' , path + 'move1.gif' , path + 'move2.gif'])
-        self.add_state('jump' , delay, [path + 'jump0.gif' . path + 'jump1.gif' , path + 'jump2.gif'])
-        self.add_state('idle', delay, [path + 'idle0.gif', path + 'idle1.gif', path + 'idle2.gif'])
+        path = color + '/' + ('left/' if direction is 'left' else 'right/')
+        self.add_state('duck_down', delay, [path + 'duck_down_00.gif', path + 'duck_down_01.gif', path + 'duck_down_02.gif'])
+        self.add_state('duck_up', delay, [path + 'duck_up_00.gif', path + 'duck_up_01.gif', path + 'duck_up_02.gif'])                               
+        self.add_state('punch' , delay, [path + 'punch_00.gif' , path + 'punch_01.gif' , path + 'punch_02.gif'])
+        self.add_state('move' , delay, [path + 'move_00.gif' , path + 'move_01.gif' , path + 'move_02.gif'])
+        self.add_state('jump' , delay, [path + 'jump_00.gif' . path + 'jump_01.gif' , path + 'jump_02.gif'])
+        self.add_state('idle', delay, [path + 'idle_00.gif', path + 'idle_01.gif', path + 'idle_02.gif'])
 
 
 class Game:
@@ -28,6 +28,8 @@ class Game:
     shelly.set_state('idle')
     """
 
-    def __init__(self, stage, player_left_color, player_right_color):
+    def __init__(self, player_left_color, player_right_color):
         self.player_left = Player('left', player_left_color)        
         self.player_right = Player('right', player_right_color)
+
+

@@ -13,7 +13,7 @@ class Settings:
     
     self.writer_stage1 = turtle.Turtle()
     self.writer_stage1.penup()
-    self.writer_stage1.goto(-340,160)
+    self.writer_stage1.goto(-340,150)
     self.writer_stage1.ht()
    
    
@@ -35,12 +35,12 @@ class Settings:
     self.stage3 = turtle.Turtle()
     self.stage3.penup()
     self.stage3.shape("realblack_stage.gif")
-    self.stage3.goto(220,138)  
+    self.stage3.goto(220,100)  
     
     
     self.writer_stage3 = turtle.Turtle()
     self.writer_stage3.penup()
-    self.writer_stage3.goto(120,200)
+    self.writer_stage3.goto(120,150)
     self.writer_stage3.ht()
     
     self.writer_left = turtle.Turtle()
@@ -110,6 +110,19 @@ class Settings:
     self.right_star.goto(self.ken_red_right.pos())
     
     
+    #start button at the very bottom
+
+    self.start_button = turtle.Turtle()
+    self.start_button.penup()
+    self.start_button.shape("start_button.gif")
+    self.start_button.goto(0,-300)
+    self.start_button.ht()
+    
+  
+    
+    
+    
+    
     
     
     
@@ -140,7 +153,8 @@ class Settings:
     self.right_star.st()
     self.stage_star.st()
     self.left_star.st()
-  
+    self.start_button.st() 
+
   def hide(self):
    
     self.stage1.ht()

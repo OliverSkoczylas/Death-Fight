@@ -2,6 +2,8 @@ import time
 import turtle
 from menu import Menu
 from settings import Settings
+from game import Game
+
 
 # Instantiate screen and register all image assets
 screen = turtle.Screen()
@@ -15,12 +17,14 @@ screen.addshape("real_blue_ken.gif")
 screen.addshape("real_green_ken.gif")
 screen.addshape("real_red_ken.gif")
 screen.addshape("star.gif")
+screen.addshape("start_button.gif")
 
 screen.tracer(0) # Only update screen after screen.update()
 
 # Create the two menues (hidden by default)
 menu = Menu()
 settings = Settings()
+game = None
 
 # Default game options
 stage = "stage1"
@@ -109,7 +113,22 @@ def f_ken_green_right(x, y):
     screen.update()
 settings.ken_green_right.onclick(f_ken_green_right)
 
-#settings.show()
+
+def f_start_button(x, y):
+    global game
+    settings.hide()
+    game = Game(player_left, player_right)
+    settings.start_button.onclick(f_start_button)
+    if stage is "stage1":
+        screen.bgpic("big_stage1.gif")
+    elif stage is "stage2":
+        screen.bgpic("big_realgreen.gif")
+    elif stage is "stage3":
+        screen.bgpic("big_realblack_stage.gif")
+
+
+
+
 menu.show() # Show the main menu first
 screen.update()
 turtle.mainloop()
