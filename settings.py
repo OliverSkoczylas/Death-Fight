@@ -5,6 +5,9 @@ import turtle
 
 class Settings:
   def __init__(self):
+    
+    #stage 1 and the writing above it
+    
     self.stage1 = turtle.Turtle()
     self.stage1.penup()
     self.stage1.shape("realstage.gif")
@@ -16,7 +19,7 @@ class Settings:
     self.writer_stage1.goto(-340,150)
     self.writer_stage1.ht()
    
-   
+   #stage 2 and writing above it
    
    
     self.stage2 = turtle.Turtle()
@@ -30,7 +33,7 @@ class Settings:
     self.writer_stage2.goto(-125,150)
     self.writer_stage2.ht()
     
-    
+    #stage 3 and writing above it
     
     self.stage3 = turtle.Turtle()
     self.stage3.penup()
@@ -43,17 +46,21 @@ class Settings:
     self.writer_stage3.goto(120,150)
     self.writer_stage3.ht()
     
+    #writing above left ken
+    
     self.writer_left = turtle.Turtle()
     self.writer_left.penup()
     self.writer_left.goto(-360, 20)
     self.writer_left.ht()
+    
+    #writing above right ken
     
     self.writer_right = turtle.Turtle()
     self.writer_right.penup()
     self.writer_right.goto(20, 20)
     self.writer_right.ht()
     
-    
+    #all kens on left side
     
     self.ken_blue_left = turtle.Turtle()
     self.ken_blue_left.penup()
@@ -70,7 +77,7 @@ class Settings:
     self.ken_green_left.shape("real_green_ken.gif")
     self.ken_green_left.goto(-190, -190)
      
-    
+    #all the kens on right side
     
     self.ken_blue_right = turtle.Turtle()
     self.ken_blue_right.penup()
@@ -92,21 +99,18 @@ class Settings:
     self.stage_star = turtle.Turtle()
     self.stage_star.penup()
     self.stage_star.shape("star.gif")
-    self.stage_star.ht()
     self.stage_star.goto(self.stage1.pos())
     
     
     self.left_star = turtle.Turtle()
     self.left_star.penup()
     self.left_star.shape("star.gif")
-    self.left_star.ht()
     self.left_star.goto(self.ken_blue_left.pos())
     
     
     self.right_star = turtle.Turtle()
     self.right_star.penup()
     self.right_star.shape("star.gif")
-    self.right_star.ht()
     self.right_star.goto(self.ken_red_right.pos())
     
     
@@ -116,7 +120,7 @@ class Settings:
     self.start_button.penup()
     self.start_button.shape("start_button.gif")
     self.start_button.goto(0,-300)
-    self.start_button.ht()
+  
     
   
     
@@ -132,7 +136,7 @@ class Settings:
     self.hide()   
   
   
-  
+  #Show every single turtle when show settings
   
   def show(self):
 
@@ -155,6 +159,10 @@ class Settings:
     self.left_star.st()
     self.start_button.st() 
 
+  
+  
+  #hide every single turtle when you hide settings
+  
   def hide(self):
    
     self.stage1.ht()
@@ -171,5 +179,7 @@ class Settings:
     self.ken_blue_right.ht()
     self.ken_red_right.ht()
     self.ken_green_right.ht()
-    
-    
+    self.stage_star.ht()
+    self.left_star.ht()
+    self.right_star.ht()
+    self.start_button.ht()

@@ -19,6 +19,24 @@ screen.addshape("real_red_ken.gif")
 screen.addshape("star.gif")
 screen.addshape("start_button.gif")
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 screen.tracer(0) # Only update screen after screen.update()
 
 # Create the two menues (hidden by default)
@@ -118,15 +136,14 @@ def f_start_button(x, y):
     global game
     settings.hide()
     game = Game(player_left, player_right)
-    settings.start_button.onclick(f_start_button)
     if stage is "stage1":
         screen.bgpic("big_stage1.gif")
     elif stage is "stage2":
         screen.bgpic("big_realgreen.gif")
     elif stage is "stage3":
         screen.bgpic("big_realblack_stage.gif")
-
-
+    screen.update()
+settings.start_button.onclick(f_start_button)
 
 
 menu.show() # Show the main menu first
