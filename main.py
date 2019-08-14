@@ -1,3 +1,4 @@
+import os
 import time
 import turtle
 from menu import Menu
@@ -9,33 +10,11 @@ from game import Game
 screen = turtle.Screen()
 screen.setup(1000, 800)
 screen.bgpic("ezgif.com-apng-to-gif.gif")
-screen.addshape("play.button.gif")
-screen.addshape("realstage.gif")
-screen.addshape("realgreen.gif")
-screen.addshape("realblack_stage.gif")
-screen.addshape("real_blue_ken.gif")
-screen.addshape("real_green_ken.gif")
-screen.addshape("real_red_ken.gif")
-screen.addshape("star.gif")
-screen.addshape("start_button.gif")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+for root, _, files in os.walk("."):
+    for file in files:
+        if file.endswith("gif"):
+            screen.addshape(root[2:] + ("" if root is "." else "/") + file)
 
 screen.tracer(0) # Only update screen after screen.update()
 
@@ -135,7 +114,7 @@ settings.ken_green_right.onclick(f_ken_green_right)
 def f_start_button(x, y):
     global game
     settings.hide()
-    game = Game(player_left, player_right)
+    game = Game(screen, player_left, player_right)
     if stage is "stage1":
         screen.bgpic("big_stage1.gif")
     elif stage is "stage2":

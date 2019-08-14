@@ -35,7 +35,7 @@ class Sprite(turtle.Turtle):
         sprites.append(self)
     
         self.states = {}
-        for key,state in states.iteritems():
+        for key,state in states.items():
             self.states[key] = State(state["delay"] / 1000.0, state["shapes"])
       
         self.current_state = None

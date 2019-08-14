@@ -10,22 +10,37 @@ class Player(animations.Sprite):
     def __init__(self, direction, color):
         super(Player, self).__init__()
         self.speed = 10
-        delay = 100
-        path = color + '/' + ('left/' if direction is 'left' else 'right/')
-        self.add_state('duck_down', delay, [path + 'duck_down_00.gif', path + 'duck_down_01.gif', path + 'duck_down_02.gif'])
-        self.add_state('duck_up', delay, [path + 'duck_up_00.gif', path + 'duck_up_01.gif', path + 'duck_up_02.gif'])                               
-        self.add_state('punch' , delay, [path + 'punch_00.gif' , path + 'punch_01.gif' , path + 'punch_02.gif'])
-        self.add_state('move' , delay, [path + 'move_00.gif' , path + 'move_01.gif' , path + 'move_02.gif'])
-        self.add_state('jump' , delay, [path + 'jump_00.gif' , path + 'jump_01.gif' , path + 'jump_02.gif'])
-        self.add_state('idle', delay, [path + 'idle_00.gif', path + 'idle_01.gif', path + 'idle_02.gif'])
+        delay = 101
+        path = "sprites/" + color + '/' + ('left/' if direction is 'left' else 'right/')
+        
+        # Examples
+        # root = sprites/red/left
+        # file = idle_01.gif
+        for root, _, files in os.walk("sprites"):
+            
+
+        self.add_state('duck_down', delay, [path + 'duck_down_01.gif', path + 'duck_down_02.gif', path + 'duck_down_03.gif'])
+        self.add_state('duck_up', delay, [path + 'duck_up_01.gif', path + 'duck_up_02.gif', path + 'duck_up_03.gif'])                               
+        self.add_state('punch' , delay, [path + 'punch_01.gif' , path + 'punch_02.gif' , path + 'punch_03.gif'])
+        self.add_state('move' , delay, [path + 'move_01.gif' , path + 'move_02.gif' , path + 'move_03.gif'])
+        self.add_state('jump' , delay, [path + 'jump_01.gif' , path + 'jump_02.gif' , path + 'jump_03.gif'])
+        self.add_state('idle', delay, [path + 'idle_01.gif', path + 'idle_02.gif', path + 'idle_03.gif'])
+    
     
     def forward(self):
         self.set_state('move')
-        super(Player, self).forward(self.speed)
 
+    def duck_up(self):
+        self.set_state('duck_up')
+    
+    def duck_down(self):
+        self.set_state('duck_down')    
 
+    def jump(self):
+        self.set_state('jump')
 
-
+    def punch(self):
+        self.set_state('punch')
 
     def idle(self):
         self.set_state('idle')
@@ -35,16 +50,23 @@ class Game:
     Sprite example declaration
 
     shelly = animations.Sprite()
-    shelly.add_state('idle', 100, ['idle01.gif', 'idle02.gif', 'idle03.gif'])
+    shelly.add_state('idle', 101, ['idle02.gif', 'idle03.gif', 'idle03.gif'])
     shelly.set_state('idle')
     """
 
-    def __init__(self, player_left_color, player_right_color):
+    def __init__(self, screen, player_left_color, player_right_color):
         self.player_left = Player('left', player_left_color)        
         self.player_right = Player('right', player_right_color)
         self.player_left.penup()
         self.player_right.penup()
         self.player_left.goto(-150,0)
         self.player_right.goto(150,0)
-        self.player_left.forward()
-        self.player_right.forward()
+
+       
+       
+       
+       
+        screen.onkeypress(self.player_right.forward, "Right")
+        screen.onkeyrelease(self.player_right.idle, "Right")
+
+        screen.listen()
