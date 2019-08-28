@@ -8,8 +8,6 @@ class Menu:
     self.play_button.setheading(180)
     self.play_button.shape("play.button.gif")
     
-   
-    
     self.hide()
     
   def show(self):

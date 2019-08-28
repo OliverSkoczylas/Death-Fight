@@ -114,7 +114,6 @@ settings.ken_green_right.onclick(f_ken_green_right)
 def f_start_button(x, y):
     global game
     settings.hide()
-    game = Game(screen, player_left, player_right)
     if stage is "stage1":
         screen.bgpic("big_stage1.gif")
     elif stage is "stage2":
@@ -122,6 +121,7 @@ def f_start_button(x, y):
     elif stage is "stage3":
         screen.bgpic("big_realblack_stage.gif")
     screen.update()
+    game = Game(player_left, player_right)
 settings.start_button.onclick(f_start_button)
 
 

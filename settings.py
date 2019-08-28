@@ -121,18 +121,6 @@ class Settings:
     self.start_button.shape("start_button.gif")
     self.start_button.goto(0,-300)
   
-    
-  
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     self.hide()   
   
   

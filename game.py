@@ -1,6 +1,25 @@
 import turtle
 import animations
 
+class Key:
+    def __init__(self, key):
+        self.key = key
+        self.is_pressed = False
+    
+    def toggle(self):
+        if self.is_pressed:
+            self.is_pressed = False
+        else:
+            self.is_pressed = True
+    
+    def __bool__(self):
+        return self.is_pressed
+
+KEYS = ["w", "a", "s", "d", "Up", "Down", "Left", "Right", "space"]
+keys = {}
+for key in KEYS:
+    keys[key] = Key(key)
+
 class Player(animations.Sprite):
     """
     Image naming template: name0b.gif, name1b.gif, name2b.gif
@@ -16,7 +35,7 @@ class Player(animations.Sprite):
         # Examples
         # root = sprites/red/left
         # file = idle_01.gif
-        for root, _, files in os.walk("sprites"):
+        #for root, _, files in os.walk("sprites"):
             
 
         self.add_state('duck_down', delay, [path + 'duck_down_01.gif', path + 'duck_down_02.gif', path + 'duck_down_03.gif'])
@@ -25,25 +44,28 @@ class Player(animations.Sprite):
         self.add_state('move' , delay, [path + 'move_01.gif' , path + 'move_02.gif' , path + 'move_03.gif'])
         self.add_state('jump' , delay, [path + 'jump_01.gif' , path + 'jump_02.gif' , path + 'jump_03.gif'])
         self.add_state('idle', delay, [path + 'idle_01.gif', path + 'idle_02.gif', path + 'idle_03.gif'])
-    
-    
+        self.set_state('idle')
+
+        """
+        self.controls = {
+            "d" : self.forward,
+            "a" : self.back,
+        }
+        """
+
     def forward(self):
+        super().forward(1)
         self.set_state('move')
 
-    def duck_up(self):
-        self.set_state('duck_up')
-    
-    def duck_down(self):
-        self.set_state('duck_down')    
-
-    def jump(self):
-        self.set_state('jump')
-
-    def punch(self):
-        self.set_state('punch')
-
-    def idle(self):
-        self.set_state('idle')
+    def back(self):
+        super().back(1)
+        
+    def update(self):
+        if keys["d"]:
+            self.forward()
+        if keys["a"]:
+            self.back()
+        super().update()
 
 class Game:
     """
@@ -54,7 +76,7 @@ class Game:
     shelly.set_state('idle')
     """
 
-    def __init__(self, screen, player_left_color, player_right_color):
+    def __init__(self, player_left_color, player_right_color):
         self.player_left = Player('left', player_left_color)        
         self.player_right = Player('right', player_right_color)
         self.player_left.penup()
@@ -62,11 +84,15 @@ class Game:
         self.player_left.goto(-150,0)
         self.player_right.goto(150,0)
 
-       
-       
-       
-       
-        screen.onkeypress(self.player_right.forward, "Right")
-        screen.onkeyrelease(self.player_right.idle, "Right")
+        screen = self.player_left.getscreen()
+
+        for key in KEYS:
+            key = keys[key]
+            screen.onkeypress(key.toggle, key.key)
+            screen.onkey(key.toggle, key.key)
 
         screen.listen()
+
+        while True:
+            screen.update()
+            self.player_left.update()

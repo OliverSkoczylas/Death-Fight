@@ -44,10 +44,10 @@ class Sprite(turtle.Turtle):
         self.states[name] = State(delay / 1000.0, shapes)
     
     def set_state(self, name):
+        assert name in self.states.keys()
         if self.current_state != self.states[name]:
             if self.current_state:
                 self.current_state.stop()
-            assert name in self.states.keys()
             self.current_state = self.states[name]
             self.current_state.run()
     
