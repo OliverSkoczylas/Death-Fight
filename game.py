@@ -1,4 +1,5 @@
 import turtle
+import os
 import animations
 
 class Key:
@@ -15,10 +16,14 @@ class Key:
     def __bool__(self):
         return self.is_pressed
 
-KEYS = ["w", "a", "s", "d", "Up", "Down", "Left", "Right", "space"]
-keys = {}
-for key in KEYS:
-    keys[key] = Key(key)
+class Controller:
+    def __init__(self):
+        self.keys = {}
+        for key in KEYS:
+            self.keys[key] = Key(key)
+        
+KEYS = ["w", "a", "s", "d", "Up", "Down", "Left", "Right", "space", "Shift_L", "Shift_R", "KP_0"]
+controller = Controller()
 
 class Player(animations.Sprite):
     """
@@ -29,29 +34,62 @@ class Player(animations.Sprite):
     def __init__(self, direction, color):
         super(Player, self).__init__()
         self.speed = 10
-        delay = 101
+        delay = 50
         path = "sprites/" + color + '/' + ('left/' if direction is 'left' else 'right/')
+
+        duck_down = []
+        duck_up = []
+        punch = []
+        move = []
+        jump = []
+        idle = []
         
         # Examples
         # root = sprites/red/left
         # file = idle_01.gif
-        #for root, _, files in os.walk("sprites"):
-            
+        for root, _, files in os.walk(path):
+            for file in files:
+                if file.startswith("duck_down"):
+                    duck_down.append(path + file)
+                elif file.startswith("duck_up"):
+                    duck_up.append(path + file)
+                elif file.startswith("punch"):
+                    punch.append(path + file)
+                elif file.startswith("move"):
+                    move.append(path + file)
+                elif file.startswith("jump"):
+                    jump.append(path + file)
+                elif file.startswith("idle"):
+                    idle.append(path + file)
 
-        self.add_state('duck_down', delay, [path + 'duck_down_01.gif', path + 'duck_down_02.gif', path + 'duck_down_03.gif'])
-        self.add_state('duck_up', delay, [path + 'duck_up_01.gif', path + 'duck_up_02.gif', path + 'duck_up_03.gif'])                               
-        self.add_state('punch' , delay, [path + 'punch_01.gif' , path + 'punch_02.gif' , path + 'punch_03.gif'])
-        self.add_state('move' , delay, [path + 'move_01.gif' , path + 'move_02.gif' , path + 'move_03.gif'])
-        self.add_state('jump' , delay, [path + 'jump_01.gif' , path + 'jump_02.gif' , path + 'jump_03.gif'])
-        self.add_state('idle', delay, [path + 'idle_01.gif', path + 'idle_02.gif', path + 'idle_03.gif'])
+        duck_down.sort()        
+        duck_up.sort()
+        punch.sort()
+        move.sort()
+        jump.sort()
+        idle.sort()
+
+        self.add_state('duck_down', delay, duck_down)
+        self.add_state('duck_up', delay, duck_up)                               
+        self.add_state('punch' , delay, punch)
+        self.add_state('move' , delay, move)
+        self.add_state('jump' , delay, jump)
+        self.add_state('idle', delay, idle)
         self.set_state('idle')
 
-        """
-        self.controls = {
-            "d" : self.forward,
-            "a" : self.back,
-        }
-        """
+        if direction is 'left':
+            self.back_key = 'a'
+            self.forward_key = 'd'
+            self.punch_key = "space"
+            self.jump_key = 'w'
+            self.duck_key = 's'
+        
+        else:
+            self.back_key = 'Left'
+            self.forward_key = 'Right'
+            self.punch_key = "KP_0"
+            self.jump_key = "Up" 
+            self.duck_key = "Down"
 
     def forward(self):
         super().forward(1)
@@ -59,12 +97,24 @@ class Player(animations.Sprite):
 
     def back(self):
         super().back(1)
+        self.set_state('move')
         
     def update(self):
-        if keys["d"]:
+        if controller.keys[self.forward_key]:
             self.forward()
-        if keys["a"]:
+        elif controller.keys[self.back_key]:
             self.back()
+        elif controller.keys[self.punch_key]:
+            self.set_state('punch')
+        elif  controller.keys[self.jump_key]:
+            self.set_state('jump')        
+        elif controller.keys[self.duck_key]:
+            self.set_state("duck_down")
+        
+        
+        
+        else:
+            self.set_state("idle")    
         super().update()
 
 class Game:
@@ -77,17 +127,17 @@ class Game:
     """
 
     def __init__(self, player_left_color, player_right_color):
-        self.player_left = Player('left', player_left_color)        
+        #self.player_left = Player('left', player_left_color)        
         self.player_right = Player('right', player_right_color)
-        self.player_left.penup()
+        #self.player_left.penup()
         self.player_right.penup()
-        self.player_left.goto(-150,0)
+        #self.player_left.goto(-150,0)
         self.player_right.goto(150,0)
 
-        screen = self.player_left.getscreen()
+        screen = self.player_right.getscreen()
 
         for key in KEYS:
-            key = keys[key]
+            key = controller.keys[key]
             screen.onkeypress(key.toggle, key.key)
             screen.onkey(key.toggle, key.key)
 
@@ -95,4 +145,4 @@ class Game:
 
         while True:
             screen.update()
-            self.player_left.update()
+            self.player_right.update()
