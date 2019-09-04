@@ -31,9 +31,11 @@ class Player(animations.Sprite):
     State naming template: name, name_r
     States: duck_down, duck_up, idle, jump_up, jump_down, move_right, moveeft, punch
     """
-    def __init__(self, direction, color):
+    def __init__(self, direction, color, ground_y):
         super(Player, self).__init__()
         self.speed = 10
+        self.ground_y = ground_y + 60
+        self.is_jumping = False
         delay = 50
         path = "sprites/" + color + '/' + ('left/' if direction is 'left' else 'right/')
 
@@ -43,6 +45,7 @@ class Player(animations.Sprite):
         move = []
         jump = []
         idle = []
+        fall = []
         
         # Examples
         # root = sprites/red/left
@@ -61,60 +64,78 @@ class Player(animations.Sprite):
                     jump.append(path + file)
                 elif file.startswith("idle"):
                     idle.append(path + file)
+                elif file.startswith('fall'):
+                    fall.append(path + file)
 
+        #puts the files in order
+        
         duck_down.sort()        
         duck_up.sort()
         punch.sort()
         move.sort()
         jump.sort()
         idle.sort()
+        fall.sort()
 
         self.add_state('duck_down', delay, duck_down)
         self.add_state('duck_up', delay, duck_up)                               
         self.add_state('punch' , delay, punch)
         self.add_state('move' , delay, move)
-        self.add_state('jump' , delay, jump)
+        self.add_state('jump' , delay, jump, False)
+        self.add_state('fall' , delay, fall, False)
         self.add_state('idle', delay, idle)
         self.set_state('idle')
+        
 
         if direction is 'left':
-            self.back_key = 'a'
-            self.forward_key = 'd'
+            self.right_key = 'd'
+            self.left_key = 'a'
             self.punch_key = "space"
             self.jump_key = 'w'
             self.duck_key = 's'
         
         else:
-            self.back_key = 'Left'
-            self.forward_key = 'Right'
+            self.right_key = 'Right'
+            self.left_key = 'Left'
             self.punch_key = "KP_0"
             self.jump_key = "Up" 
             self.duck_key = "Down"
 
-    def forward(self):
-        super().forward(1)
+    def left(self):
+        super().back(1)
         self.set_state('move')
 
-    def back(self):
-        super().back(1)
+    def right(self):
+        super().forward(1)
         self.set_state('move')
         
     def update(self):
-        if controller.keys[self.forward_key]:
-            self.forward()
-        elif controller.keys[self.back_key]:
-            self.back()
-        elif controller.keys[self.punch_key]:
-            self.set_state('punch')
-        elif  controller.keys[self.jump_key]:
-            self.set_state('jump')        
-        elif controller.keys[self.duck_key]:
-            self.set_state("duck_down")
         
         
-        
+        if self.is_jumping:
+            self.sety(self.ycor() + self.velocity)
+            if self.velocity <= 0:
+                self.set_state("fall")
+            if self.ycor() <= self.ground_y:
+                self.is_jumping = False
+            self.velocity -= .01
+
         else:
-            self.set_state("idle")    
+
+            if controller.keys[self.left_key]:
+                self.left()
+            elif controller.keys[self.right_key]:
+                self.right()
+            elif controller.keys[self.punch_key]:
+                self.set_state('punch')
+            elif  controller.keys[self.jump_key]:
+                self.set_state('jump')
+                self.is_jumping = True
+                self.velocity = 2
+            elif controller.keys[self.duck_key]:
+                self.set_state("duck_down")
+            else:
+                self.set_state("idle")    
         super().update()
 
 class Game:
@@ -127,8 +148,8 @@ class Game:
     """
 
     def __init__(self, player_left_color, player_right_color):
-        #self.player_left = Player('left', player_left_color)        
-        self.player_right = Player('right', player_right_color)
+        #self.player_left = Player('left', player_left_color, -2)        
+        self.player_right = Player('right', player_right_color, 0)
         #self.player_left.penup()
         self.player_right.penup()
         #self.player_left.goto(-150,0)

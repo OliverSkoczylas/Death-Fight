@@ -4,15 +4,17 @@ from threading import Timer
 sprites = []
 
 class State:
-    def __init__(self, delay, shapes):
+    def __init__(self, delay, shapes, repeats=True):
         self.delay = delay
         self.shapes = shapes
         self.index = 0
+        self.repeats = repeats
         self.current_shape = self.shapes[self.index]
     
     def next(self):
         if self.index == len(self.shapes) - 1:
-            self.index = 0
+            if self.repeats:
+                self.index = 0
         else:
             self.index += 1
         self.current_shape = self.shapes[self.index]
@@ -36,12 +38,12 @@ class Sprite(turtle.Turtle):
     
         self.states = {}
         for key,state in states.items():
-            self.states[key] = State(state["delay"] / 1000.0, state["shapes"])
+            self.states[key] = State(state["delay"] / 1000.0, state["shapes"], state["repeats"])
       
         self.current_state = None
     
-    def add_state(self, name, delay, shapes):
-        self.states[name] = State(delay / 1000.0, shapes)
+    def add_state(self, name, delay, shapes, repeats=True):
+        self.states[name] = State(delay / 1000.0, shapes, repeats)
     
     def set_state(self, name):
         assert name in self.states.keys()
