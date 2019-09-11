@@ -36,6 +36,9 @@ class Player(animations.Sprite):
         self.speed = 10
         self.ground_y = ground_y + 60
         self.is_jumping = False
+        self.is_crouching = False
+        self.is_punching = False
+        self.horizontal_velocity = 1 if direction is 'right' else -1
         delay = 50
         path = "sprites/" + color + '/' + ('left/' if direction is 'left' else 'right/')
 
@@ -77,7 +80,7 @@ class Player(animations.Sprite):
         idle.sort()
         fall.sort()
 
-        self.add_state('duck_down', delay, duck_down)
+        self.add_state('duck_down', delay, duck_down, False)
         self.add_state('duck_up', delay, duck_up)                               
         self.add_state('punch' , delay, punch)
         self.add_state('move' , delay, move)
@@ -102,11 +105,11 @@ class Player(animations.Sprite):
             self.duck_key = "Down"
 
     def left(self):
-        super().back(1)
+        self.back(self.horizontal_velocity)
         self.set_state('move')
 
     def right(self):
-        super().forward(1)
+        self.forward(self.horizontal_velocity)
         self.set_state('move')
         
     def update(self):
@@ -118,7 +121,15 @@ class Player(animations.Sprite):
                 self.set_state("fall")
             if self.ycor() <= self.ground_y:
                 self.is_jumping = False
+            
+            if controller.keys[self.left_key]:
+                self.back(1)
+            elif controller.keys[self.right_key]:
+                self.forward(1)
             self.velocity -= .01
+        
+        elif self.is_crouching:
+            
 
         else:
 
@@ -128,12 +139,14 @@ class Player(animations.Sprite):
                 self.right()
             elif controller.keys[self.punch_key]:
                 self.set_state('punch')
+                self.is_punching = True
             elif  controller.keys[self.jump_key]:
                 self.set_state('jump')
                 self.is_jumping = True
                 self.velocity = 2
             elif controller.keys[self.duck_key]:
                 self.set_state("duck_down")
+                self.is_crouching = True
             else:
                 self.set_state("idle")    
         super().update()
