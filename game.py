@@ -36,7 +36,7 @@ class Player(animations.Sprite):
         self.speed = 10
         self.ground_y = ground_y + 60
         self.is_jumping = False
-        self.is_crouching = False
+        self.is_ducking = False
         self.is_punching = False
         self.horizontal_velocity = 1 if direction is 'right' else -1
         delay = 50
@@ -81,7 +81,7 @@ class Player(animations.Sprite):
         fall.sort()
 
         self.add_state('duck_down', delay, duck_down, False)
-        self.add_state('duck_up', delay, duck_up)                               
+        self.add_state('duck_up', delay, duck_up, False)                               
         self.add_state('punch' , delay, punch)
         self.add_state('move' , delay, move)
         self.add_state('jump' , delay, jump, False)
@@ -128,8 +128,14 @@ class Player(animations.Sprite):
                 self.forward(1)
             self.velocity -= .01
         
-        elif self.is_crouching:
-            
+        elif self.is_ducking:
+            ducking_is_done = False
+            if not controller.keys[self.duck_key] and self.states["duck_down"].is_done:
+                ducking_is_done = True
+                self.set_state('duck_up')
+            if ducking_is_done and self.states['duck_up'].is_done:
+                self.is_ducking = False
+
 
         else:
 
@@ -146,7 +152,7 @@ class Player(animations.Sprite):
                 self.velocity = 2
             elif controller.keys[self.duck_key]:
                 self.set_state("duck_down")
-                self.is_crouching = True
+                self.is_ducking = True
             else:
                 self.set_state("idle")    
         super().update()

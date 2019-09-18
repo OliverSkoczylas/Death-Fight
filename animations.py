@@ -15,19 +15,29 @@ class State:
         if self.index == len(self.shapes) - 1:
             if self.repeats:
                 self.index = 0
+            else:
+                self.is_done = True
         else:
             self.index += 1
         self.current_shape = self.shapes[self.index]
+
+    def start(self):
+        self.index = 0
+        self.current_shape = self.shapes[self.index]
+        self.is_done = False
+        self.run()
   
     def run(self):
         def func_wrapper():
             self.run()
-            self.next()
+            if not self.is_done:
+                self.next()
         self.timer = Timer(self.delay, func_wrapper)
         self.timer.start()
   
     def stop(self):
         if self.timer:
+            self.is_done = True
             self.timer.cancel()
 
 class Sprite(turtle.Turtle):
@@ -50,8 +60,9 @@ class Sprite(turtle.Turtle):
         if self.current_state != self.states[name]:
             if self.current_state:
                 self.current_state.stop()
+                self.current_state.index = 0
             self.current_state = self.states[name]
-            self.current_state.run()
+            self.current_state.start()
     
     def update(self):
         self.shape(self.current_state.current_shape)
