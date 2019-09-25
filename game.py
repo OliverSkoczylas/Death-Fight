@@ -22,7 +22,7 @@ class Controller:
         for key in KEYS:
             self.keys[key] = Key(key)
         
-KEYS = ["w", "a", "s", "d", "Up", "Down", "Left", "Right", "space", "Shift_L", "Shift_R", "KP_0"]
+KEYS = ["w", "a", "s", "d", "Up", "Down", "Left", "Right", "space", "Shift_L", "Shift_R", "KP_0", 'Control_R']
 controller = Controller()
 
 class Player(animations.Sprite):
@@ -82,7 +82,7 @@ class Player(animations.Sprite):
 
         self.add_state('duck_down', delay, duck_down, False)
         self.add_state('duck_up', delay, duck_up, False)                               
-        self.add_state('punch' , delay, punch)
+        self.add_state('punch' , delay, punch, False)
         self.add_state('move' , delay, move)
         self.add_state('jump' , delay, jump, False)
         self.add_state('fall' , delay, fall, False)
@@ -100,7 +100,7 @@ class Player(animations.Sprite):
         else:
             self.right_key = 'Right'
             self.left_key = 'Left'
-            self.punch_key = "KP_0"
+            self.punch_key = 'Control_R'
             self.jump_key = "Up" 
             self.duck_key = "Down"
 
@@ -136,9 +136,14 @@ class Player(animations.Sprite):
             if ducking_is_done and self.states['duck_up'].is_done:
                 self.is_ducking = False
 
+        
+        elif self.is_punching:
+            if self.states["punch"].is_done:
+                self.is_punching = False    
+
 
         else:
-
+           
             if controller.keys[self.left_key]:
                 self.left()
             elif controller.keys[self.right_key]:
@@ -146,7 +151,7 @@ class Player(animations.Sprite):
             elif controller.keys[self.punch_key]:
                 self.set_state('punch')
                 self.is_punching = True
-            elif  controller.keys[self.jump_key]:
+            elif controller.keys[self.jump_key]:
                 self.set_state('jump')
                 self.is_jumping = True
                 self.velocity = 2
