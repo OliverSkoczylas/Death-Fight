@@ -1,6 +1,7 @@
 import turtle
 import os
 import animations
+import hitbox
 
 class Key:
     def __init__(self, key):
@@ -22,7 +23,7 @@ class Controller:
         for key in KEYS:
             self.keys[key] = Key(key)
         
-KEYS = ["w", "a", "s", "d", "Up", "Down", "Left", "Right", "space", "Shift_L", "Shift_R", "KP_0", 'Control_R']
+KEYS = ["w", "a", "s", "d", "Up", "Down", "Left", "Right", "space", "Shift_L", "Shift_R", "KP_0", 'Control_R', 'Escape']
 controller = Controller()
 
 class Player(animations.Sprite):
@@ -33,8 +34,13 @@ class Player(animations.Sprite):
     """
     def __init__(self, direction, color, ground_y):
         super(Player, self).__init__()
+        self.direction = direction
         self.speed = 10
+        self.health = 10
         self.ground_y = ground_y + 60
+        self.body = hitbox.Hitbox(100, 116, self)
+        self.fist = hitbox.Hitbox(38.66, 38.66, self, hitbox.Point(69.33 if direction == "left" else -69.33, 0))
+        self.fist.is_active = False
         self.is_jumping = False
         self.is_ducking = False
         self.is_punching = False
@@ -91,8 +97,8 @@ class Player(animations.Sprite):
         
 
         if direction is 'left':
-            self.right_key = 'd'
-            self.left_key = 'a'
+            self.right_key = 'a'
+            self.left_key = 'd'
             self.punch_key = "space"
             self.jump_key = 'w'
             self.duck_key = 's'
@@ -112,7 +118,7 @@ class Player(animations.Sprite):
         self.forward(self.horizontal_velocity)
         self.set_state('move')
         
-    def update(self):
+    def update(self, other_fist):
         
         
         if self.is_jumping:
@@ -123,9 +129,9 @@ class Player(animations.Sprite):
                 self.is_jumping = False
             
             if controller.keys[self.left_key]:
-                self.back(1)
+                self.back(self.horizontal_velocity)
             elif controller.keys[self.right_key]:
-                self.forward(1)
+                self.forward(self.horizontal_velocity)
             self.velocity -= .01
         
         elif self.is_ducking:
@@ -138,12 +144,18 @@ class Player(animations.Sprite):
 
         
         elif self.is_punching:
+            self.fist.is_active = True
             if self.states["punch"].is_done:
+                self.fist.is_active = False
                 self.is_punching = False    
 
 
         else:
            
+            if self.body.is_colliding(other_fist) and other_fist.is_active:
+                self.health -= 1
+                print(self.direction + ": " + str(self.health))
+
             if controller.keys[self.left_key]:
                 self.left()
             elif controller.keys[self.right_key]:
@@ -172,11 +184,11 @@ class Game:
     """
 
     def __init__(self, player_left_color, player_right_color):
-        #self.player_left = Player('left', player_left_color, -2)        
+        self.player_left = Player('left', player_left_color, -2)        
         self.player_right = Player('right', player_right_color, 0)
-        #self.player_left.penup()
+        self.player_left.penup()
         self.player_right.penup()
-        #self.player_left.goto(-150,0)
+        self.player_left.goto(-150,0)
         self.player_right.goto(150,0)
 
         screen = self.player_right.getscreen()
@@ -186,8 +198,27 @@ class Game:
             screen.onkeypress(key.toggle, key.key)
             screen.onkey(key.toggle, key.key)
 
+        self.back_arrow = turtle.Turtle()
+        self.back_arrow.penup()
+        self.back_arrow.shape('back_arrow.gif')
+        self.back_arrow.goto(-300, 700)
+        
+        self.writer_pause = turtle.Turtle()
+        self.writer_pause.penup()
+        self.writer_pause.goto(20, 20)
+        self.writer_pause.ht()
+        
+            
+            
+            
+            
         screen.listen()
 
         while True:
             screen.update()
-            self.player_right.update()
+            if controller.keys['Escape']:
+                break
+            self.player_right.update(self.player_left.fist)
+            self.player_left.update(self.player_right.fist)
+            hitbox.update()
+        self.writer_pause.st()

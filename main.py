@@ -9,7 +9,7 @@ from game import Game
 # Instantiate screen and register all image assets
 screen = turtle.Screen()
 screen.setup(1000, 800)
-screen.bgpic("ezgif.com-apng-to-gif.gif")
+screen.bgpic("backround.png")
 
 for root, _, files in os.walk("."):
     for file in files:
@@ -17,6 +17,7 @@ for root, _, files in os.walk("."):
             screen.addshape(root[2:] + ("" if root is "." else "/") + file)
 
 screen.tracer(0) # Only update screen after screen.update()
+
 
 # Create the two menues (hidden by default)
 menu = Menu()
@@ -123,6 +124,11 @@ def f_start_button(x, y):
     screen.update()
     game = Game(player_left, player_right)
 settings.start_button.onclick(f_start_button)
+
+
+
+
+
 
 
 menu.show() # Show the main menu first

@@ -121,6 +121,30 @@ class Settings:
     self.start_button.shape("start_button.gif")
     self.start_button.goto(0,-300)
   
+    
+    
+    self.back_arrow = turtle.Turtle()
+   
+    self.back_arrow.penup()
+    self.back_arrow.shape('back_arrow.gif')
+    self.back_arrow.goto(-300, 700)
+    
+
+
+
+    self.writer_pause = turtle.Turtle()
+    self.writer_pause.penup()
+    self.writer_pause.goto(20, 20)
+    self.writer_pause.ht()
+     
+
+
+
+
+    
+    
+    
+    
     self.hide()   
   
   
@@ -136,6 +160,7 @@ class Settings:
     self.writer_stage3.write("stage 3", True, font=("arial", 40, "normal"))
     self.writer_left.write("Left Character Color", True, font=("arial", 25, "normal"))
     self.writer_right.write("Right Character Color", True, font=("arial", 25, "normal"))
+    #self.writer_pause.write("Paused", True, font=("arial", 50, "normal"))
     self.ken_blue_left.st()
     self.ken_red_left.st()
     self.ken_green_left.st()
@@ -146,6 +171,7 @@ class Settings:
     self.stage_star.st()
     self.left_star.st()
     self.start_button.st() 
+    self.back_arrow.st()
 
   
   
@@ -161,6 +187,7 @@ class Settings:
     self.writer_stage3.clear()
     self.writer_left.clear()
     self.writer_right.clear()
+    self.writer_pause.clear()
     self.ken_blue_left.ht()
     self.ken_red_left.ht()
     self.ken_green_left.ht()
@@ -171,3 +198,4 @@ class Settings:
     self.left_star.ht()
     self.right_star.ht()
     self.start_button.ht()
+    self.back_arrow.ht()
