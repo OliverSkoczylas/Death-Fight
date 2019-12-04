@@ -41,6 +41,7 @@ class Player(animations.Sprite):
         self.body = hitbox.Hitbox(100, 116, self)
         self.fist = hitbox.Hitbox(38.66, 38.66, self, hitbox.Point(69.33 if direction == "left" else -69.33, 0))
         self.fist.is_active = False
+        self.fist.hit = False
         self.is_jumping = False
         self.is_ducking = False
         self.is_punching = False
@@ -148,13 +149,15 @@ class Player(animations.Sprite):
             if self.states["punch"].is_done:
                 self.fist.is_active = False
                 self.is_punching = False    
-
+                self.fist.hit = False
 
         else:
            
-            if self.body.is_colliding(other_fist) and other_fist.is_active:
+            if self.body.is_colliding(other_fist) and other_fist.is_active and not other_fist.hit:
+                other_fist.hit = True
                 self.health -= 1
-                print(self.direction + ": " + str(self.health))
+                print(self.direction + ":" + str(self.health))
+                
 
             if controller.keys[self.left_key]:
                 self.left()
@@ -203,14 +206,15 @@ class Game:
         self.back_arrow.shape('back_arrow.gif')
         self.back_arrow.goto(-300, 700)
         
-        self.writer_pause = turtle.Turtle()
-        self.writer_pause.penup()
-        self.writer_pause.goto(20, 20)
-        self.writer_pause.ht()
+        self.writer = turtle.Turtle()
+        self.writer.penup()
+        self.writer.goto(20, 20)
+        self.writer.ht()
         
+        self.left_health = 10
+        self.right_health = 10
             
-            
-            
+        self.update_health()
             
         screen.listen()
 
@@ -221,4 +225,18 @@ class Game:
             self.player_right.update(self.player_left.fist)
             self.player_left.update(self.player_right.fist)
             hitbox.update()
-        self.writer_pause.st()
+
+            if self.left_health != self.player_left.health:
+                self.update_health()
+
+            if self.right_health != self.player_right.health:
+                self.update_health()
+
+    def update_health(self):
+        self.writer.clear()
+        self.writer.goto(-440, 315)
+        self.writer.write(self.player_left.health, True, font=("arial", 40, "normal"))
+        self.left_health = self.player_left.health
+        self.writer.goto(440, 315)
+        self.writer.write(self.player_right.health, True, font=("arial", 40, "normal"))
+        self.right_health = self.player_right.health
