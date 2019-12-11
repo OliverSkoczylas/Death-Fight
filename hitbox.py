@@ -11,19 +11,22 @@ class Point:
         return "(%d,%d)" % (self.x, self.y)
  
 class Hitbox(turtle.Turtle):
-    def __init__(self, width, height, sprite=None, offset=Point(0, 0)):
+    def __init__(self, width, height, sprite=None, offset=Point(0, 0), draw=False):
         super().__init__()
         self.width = width
         self.height = height
         self.sprite = sprite
         self.offset = offset
         self.is_active = True
+        self.draw = draw
         self.ht()
         self.penup()
+        self.renderer = turtle.Turtle()
+        self.renderer.shape('blank')
         self.update()
         hitboxes.append(self)
-        self.shape("square")
-       
+
+        
     def is_colliding(self, hitbox):
         #print("Me:\n\rL: %s, R: %s\nOther\n\rL: %s, R: %s\n" % (self.l, self.r, hitbox.l, hitbox.r))
         if(self.l.x > hitbox.r.x or hitbox.l.x > self.r.x):
@@ -37,6 +40,24 @@ class Hitbox(turtle.Turtle):
             self.goto(self.sprite.xcor() + self.offset.x, self.sprite.ycor() + self.offset.y)
         self.l = Point(self.xcor() - self.width / 2, self.ycor() + self.height / 2)
         self.r = Point(self.xcor() + self.width / 2, self.ycor() - self.height / 2)
+
+        if self.draw and self.is_active:
+            self.renderer.clear()
+            self.renderer.goto(self.xcor() - self.width / 2, self.ycor() - self.height / 2)
+            self.renderer.setheading(0)
+            self.renderer.st()
+            self.renderer.pendown()
+            self.renderer.forward(self.width)
+            self.renderer.left(90)
+            self.renderer.forward(self.height)
+            self.renderer.left(90)
+            self.renderer.forward(self.width)
+            self.renderer.left(90)
+            self.renderer.forward(self.height)
+            self.ht()
+        else:
+            self.renderer.clear()
+            self.ht()
  
 def update():
     for hitbox in hitboxes:

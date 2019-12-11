@@ -23,7 +23,7 @@ class Controller:
         for key in KEYS:
             self.keys[key] = Key(key)
         
-KEYS = ["w", "a", "s", "d", "Up", "Down", "Left", "Right", "space", "Shift_L", "Shift_R", "KP_0", 'Control_R', 'Escape']
+KEYS = ["q", "w", "a", "s", "d", "Up", "Down", "Left", "Right", "space", "Shift_L", "Shift_R", "KP_0", 'Control_R', 'Escape']
 controller = Controller()
 
 class Player(animations.Sprite):
@@ -118,6 +118,14 @@ class Player(animations.Sprite):
     def right(self):
         self.forward(self.horizontal_velocity)
         self.set_state('move')
+
+    def show_hitboxes(self):
+        self.body.draw = True
+        self.fist.draw = True
+
+    def hide_hitboxes(self):
+        self.body.draw = False
+        self.fist.draw = False
         
     def update(self, other_fist):
         
@@ -156,7 +164,7 @@ class Player(animations.Sprite):
             if self.body.is_colliding(other_fist) and other_fist.is_active and not other_fist.hit:
                 other_fist.hit = True
                 self.health -= 1
-                print(self.direction + ":" + str(self.health))
+                
                 
 
             if controller.keys[self.left_key]:
@@ -191,8 +199,8 @@ class Game:
         self.player_right = Player('right', player_right_color, 0)
         self.player_left.penup()
         self.player_right.penup()
-        self.player_left.goto(-150,0)
-        self.player_right.goto(150,0)
+        self.player_left.goto(-150,57.9)
+        self.player_right.goto(150,57.9)
 
         screen = self.player_right.getscreen()
 
@@ -213,6 +221,8 @@ class Game:
         
         self.left_health = 10
         self.right_health = 10
+
+
             
         self.update_health()
             
@@ -222,6 +232,12 @@ class Game:
             screen.update()
             if controller.keys['Escape']:
                 break
+            if controller.keys['q']:
+                self.player_right.show_hitboxes()
+                self.player_left.show_hitboxes()
+            else:
+                self.player_right.hide_hitboxes()
+                self.player_left.hide_hitboxes()
             self.player_right.update(self.player_left.fist)
             self.player_left.update(self.player_right.fist)
             hitbox.update()
@@ -232,11 +248,22 @@ class Game:
             if self.right_health != self.player_right.health:
                 self.update_health()
 
+            if self.left_health == 0:
+                self.write("Right Wins", 0, 200)
+                screen.update()
+                break
+            elif self.right_health == 0:
+                self.write("Left Wins" , 0 , 200)
+                screen.update()
+                break
+
     def update_health(self):
         self.writer.clear()
-        self.writer.goto(-440, 315)
-        self.writer.write(self.player_left.health, True, font=("arial", 40, "normal"))
+        self.write(self.player_left.health, -440, 315)
         self.left_health = self.player_left.health
-        self.writer.goto(440, 315)
-        self.writer.write(self.player_right.health, True, font=("arial", 40, "normal"))
+        self.write(self.player_right.health, 440, 315)
         self.right_health = self.player_right.health
+
+    def write(self, message, x, y):
+        self.writer.goto(x, y)
+        self.writer.write(message, True, "center", ("arial", 40, "normal"))
