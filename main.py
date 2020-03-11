@@ -26,7 +26,7 @@ game = None
 
 # Default game options
 stage = "stage1"
-player_left = "red"
+player_left = "blue"
 player_right = "red"
 
 # Main play button function

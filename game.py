@@ -2,6 +2,7 @@ import turtle
 import os
 import animations
 import hitbox
+import time
 
 class Key:
     def __init__(self, key):
@@ -227,8 +228,14 @@ class Game:
         self.update_health()
             
         screen.listen()
+        delay = .01
+        close_time = time.time()
 
         while True:
+            
+            if time.time() <= close_time:
+                continue
+
             screen.update()
             if controller.keys['Escape']:
                 break
@@ -256,7 +263,8 @@ class Game:
                 self.write("Left Wins" , 0 , 200)
                 screen.update()
                 break
-
+            close_time = time.time() + delay
+         
     def update_health(self):
         self.writer.clear()
         self.write(self.player_left.health, -440, 315)
