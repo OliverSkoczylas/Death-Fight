@@ -26,7 +26,7 @@ game = None
 
 # Default game options
 stage = "stage1"
-player_left = "blue"
+player_left = "red"
 player_right = "red"
 
 # Main play button function
@@ -116,7 +116,7 @@ def f_start_button(x, y):
     global game
     settings.hide()
     if stage is "stage1":
-        screen.bgpic("big_stage1.gif")
+        screen.bgpic("galaxy.gif")
     elif stage is "stage2":
         screen.bgpic("big_realgreen.gif")
     elif stage is "stage3":
